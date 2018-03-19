@@ -1,0 +1,59 @@
+<header id="header-navbar" class="content-mini content-mini-full">
+    <ul class="nav-header pull-right">
+        <li><a class="btn btn-default clearCache" data-toggle="tooltip"
+               data-placement="bottom" data-original-title="清空缓存"> <i class="fa fa-trash"></i> </a></li>
+        <li><a class="btn btn-default" href="/" target="_blank" data-toggle="tooltip" data-placement="bottom"
+               data-original-title="前台首页"> <i class="fa fa-external-link-square"></i> </a></li>
+        <li>
+            <div class="btn-group">
+                <button class="btn btn-default btn-image dropdown-toggle" data-toggle="dropdown" type="button"><img
+                        src="__ONEUI__/img/avatar.jpg" alt="Avatar"> <span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li class="dropdown-header">Profile</li>
+                    <li><a tabindex="-1" href="{:url('admin/User/edit',['id'=>$uuid])}"> <i class="si si-settings pull-right"></i>个人设置 </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Actions</li>
+                    <li><a tabindex="-1" href="{:url('admin/Index/lock')}" class="lock"> <i class="si si-lock pull-right"></i>锁定屏幕 </a>
+                    </li>
+                    <li><a tabindex="-1" href="{:url('admin/Login/logout')}"> <i class="si si-logout pull-right"></i>退出登录
+                    </a></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <ul class="nav-header pull-left">
+        <li class="hidden-md hidden-lg">
+            <button class="btn btn-default" data-toggle="layout" data-action="sidebar_toggle" type="button"><i
+                    class="fa fa-navicon"></i></button>
+        </li>
+        <li class="hidden-xs hidden-sm">
+            <button class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button"><i
+                    class="fa fa-ellipsis-v"></i></button>
+        </li>
+        <li class="hidden-xs hidden-sm top">
+            <a href="{:url('admin/Index/index')}" class="top-menu {if condition="$ac eq 'Index' "}active{/if}"><i class="fa fa-fw fa-home"></i> 首页</a>
+        </li>
+        <li class="hidden-xs hidden-sm top">
+            <a href="{:url('admin/Access/index')}" class="top-menu {if condition="$ac eq 'Access' "}active{/if}"><i class="fa fa-fw fa-key"></i> 权限</a>
+        </li>
+        <li class="hidden-xs hidden-sm top">
+            <a href="{:url('admin/User/index')}" class="top-menu {if condition="$ac eq 'User' "}active{/if}"><i class="fa fa-fw fa-user"></i> 用户</a>
+        </li>
+        <li class="visible-xs">
+            <button class="btn btn-default" data-toggle="class-toggle" data-target=".js-header-search"
+                    data-class="header-search-xs-visible" type="button"><i class="fa fa-search"></i></button>
+        </li>
+        <li class="js-header-search header-search">
+            <form class="form-horizontal" action="{:url('admin/index/seacher')}" method="post">
+                <div class="form-material form-material-primary input-group remove-margin-t remove-margin-b">
+                    <input class="form-control" type="text" id="base-material-text" name="base-material-text"
+                           placeholder="Search..">
+                    <span class="input-group-addon"><i class="si si-magnifier"></i></span></div>
+            </form>
+        </li>
+    </ul>
+</header>
+<style>
+    .top .active{    color: #FFF; background-color: #44b4a6;}
+</style>

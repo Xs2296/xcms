@@ -1,0 +1,80 @@
+<nav id="sidebar">
+    <div id="sidebar-scroll">
+        <div class="sidebar-content">
+            <div class="side-header side-content bg-white-op">
+                <button class="btn btn-link text-gray pull-right hidden-md hidden-lg" type="button" data-toggle="layout"
+                        data-action="sidebar_close"><i class="fa fa-times"></i></button>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-link text-gray dropdown-toggle" data-toggle="dropdown" type="button"
+                            title="切换主题"><i class="si si-drop"></i></button>
+                    <ul class="dropdown-menu dropdown-menu-right font-s13 sidebar-mini-hide themes">
+                        <li {if condition="$themes eq 'Default'"}class="active"{else/}class=''{/if}><a data-toggle="theme" data-theme="default" tabindex="-1" href="javascript:void(0)"> <i
+                                class="fa fa-circle text-default pull-right"></i> <span class="font-w600">Default</span>
+                        </a></li>
+                        <li {if condition="$themes eq 'amethyst'"}class="active"{/if}><a data-toggle="theme" data-theme="__ONEUI__/css/themes/amethyst.min.css" tabindex="-1"
+                               href="javascript:void(0)"> <i class="fa fa-circle text-amethyst pull-right"></i> <span
+                                class="font-w600">Amethyst</span> </a></li>
+                        <li {if condition="$themes eq 'city'"}class="active"{/if}><a data-toggle="theme" data-theme="__ONEUI__/css/themes/city.min.css" tabindex="-1"
+                               href="javascript:void(0)"> <i class="fa fa-circle text-city pull-right"></i> <span
+                                class="font-w600">City</span> </a></li>
+                        <li {if condition="$themes eq 'flat'"}class="active"{/if}><a data-toggle="theme" data-theme="__ONEUI__/css/themes/flat.min.css" tabindex="-1"
+                               href="javascript:void(0)"> <i class="fa fa-circle text-flat pull-right"></i> <span
+                                class="font-w600">Flat</span> </a></li>
+                        <li {if condition="$themes eq 'modern'"}class="active"{/if}><a data-toggle="theme" data-theme="__ONEUI__/css/themes/modern.min.css" tabindex="-1"
+                               href="javascript:void(0)"> <i class="fa fa-circle text-modern pull-right"></i> <span
+                                class="font-w600">Modern</span> </a></li>
+                        <li {if condition="$themes eq 'smooth'"}class="active"{/if}><a data-toggle="theme" data-theme="__ONEUI__/css/themes/smooth.min.css" tabindex="-1"
+                               href="javascript:void(0)"> <i class="fa fa-circle text-smooth pull-right"></i> <span
+                                class="font-w600">Smooth</span> </a></li>
+                    </ul>
+                </div>
+                <a class="h5 text-white" href="{:url('admin/index/index')}"> <i
+                        class="fa fa-circle-o-notch text-primary"></i> <span
+                        class="h4 font-w600 sidebar-mini-hide">cms</span> </a></div>
+            <div class="side-content">
+                <ul class="nav-main">
+                    <li><a href="{:url('admin/Index/index')}" {if condition="$ac eq 'Index' "}class="active"{/if}><i class="si si-home"></i><span class="sidebar-mini-hide">后台首页</span></a></li>
+                    <li {if condition="($ac eq 'System') OR ($ac eq 'Config') OR ($ac eq 'Hooks') OR ($ac eq 'Database') "}class="open"{/if}>
+                        <a class="nav-submenu" data-toggle="nav-submenu"><i class="si si-wrench"></i><span class="sidebar-mini-hide">系统功能</span></a>
+                        <ul>
+                            <li>
+                                <a href="{:url('admin/System/index')}" {if condition="$ac eq 'System'"}class="active"{/if}><i class="fa fa-fw fa-wrench"></i>系统设置</a>
+                            </li>
+                            <li>
+                                <a href="{:url('admin/Config/index')}" {if condition="$ac eq 'Config'"}class="active"{/if}><i class="fa fa-fw fa-gears"></i>配置管理</a>
+                            </li>
+                            <li>
+                                <a href="{:url('admin/Hooks/index')}" {if condition="$ac eq 'Hooks'"}class="active"{/if}><i class="fa fa-fw fa-anchor"></i>钩子管理</a>
+                            </li>
+                            <li>
+                                <a href="{:url('admin/Database/index')}" {if condition="$ac eq 'Database'"}class="active"{/if}><i class="fa fa-fw fa-database"></i>数据库管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li {if condition="$ac eq 'Module' "}class="open"{/if}>
+                        <a class="nav-submenu" data-toggle="nav-submenu"><i class="fa fa-object-group"></i><span class="sidebar-mini-hide">模型管理</span></a>
+                        <ul>
+                            <li>
+                                <a href="{:url('admin/Module/index')}" {if condition="$ac eq 'Module'"}class="active"{/if}><i class="fa fa-object-group"></i>模型管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li {if condition="($ac eq 'Category') OR ($ac eq 'Xcms') "}class="open"{/if}>
+                        <a class="nav-submenu" data-toggle="nav-submenu"><i class="fa fa-fw fa-th-list"></i><span class="sidebar-mini-hide">内容管理</span></a>
+                        <ul>
+                            <li>
+                                <a href="{:url('admin/Category/index')}"  {if condition="$ac eq 'Category'"}class="active"{/if}><i class="fa fa-fw fa-sitemap"></i>栏目分类</a>
+                            </li>
+                            {volist name="modules" id="m"}
+                            <li>
+                                <a href="{:url('admin/Xcms/index',array('moduleid'=>$m['id']))}"  {if condition="$ac eq 'Xcms'"}class="active"{/if}><i class="fa fa-fw fa-th-large"></i>{$m.title}</a>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

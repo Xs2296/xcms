@@ -1,0 +1,14 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12">{$form[title]}</label>
+    <div class="col-sm-12">
+        {volist name="form[options]" id="option"}
+        <div class="checkbox-inline">
+            <label for="checkbox-{$form[name]}{$i}">
+                <input type="checkbox" id="checkbox-{$form[name]}{$i}" name="{$form[name]}[]" value="{$key}"
+                       {in name="$key" value="$form[value]"}checked{/in}>{$option}
+            </label>
+        </div>
+        {/volist}
+        <div class="help-block">{if condition="$form.tips neq ''"}{$form[tips]}{/if}</div>
+    </div>
+</div>

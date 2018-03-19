@@ -1,0 +1,16 @@
+<!--//字段验证规则-->
+<script type='text/javascript'>
+    $('input[name="required"]').change(function () {
+        var required = $(this).val();
+        if ((required == 1)) {
+            $('#form_group_rules').show();
+        } else {
+            $('#form_group_rules').hide();
+        }
+    })
+    if (('{$required}' == '1')) {
+        $('#form_group_rules').show();
+    } else {
+        $('#form_group_rules').hide();
+    }
+</script>

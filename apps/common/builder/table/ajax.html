@@ -1,0 +1,220 @@
+<!--//ajax操作-->
+<script type='text/javascript'>
+    //全选、反选
+    $('#check-all').click(function () {
+        if (this.checked) {
+            $(".ids :checkbox").prop("checked", true);
+        } else {
+            $(".ids :checkbox").prop("checked", false);
+        }
+    })
+    //不全选
+    $('.check-id').click(function () {
+        var total = $(".ids :checkbox").size();
+        var check = 0;
+        $(".ids :checkbox").each(function () {
+            if ($(this).prop("checked") == true) {
+                check++;
+            }
+        });
+        if (total == check) {
+            $("#check-all").prop("checked", true);
+        } else {
+            $("#check-all").prop("checked", false);
+        }
+    })
+    //按钮
+    {if (!empty($buttons))}
+    {volist name = "buttons" id = "button"}
+        {switch name = "button"}
+            {case value = "enable"}
+                $(".enable").click(function () {
+                    var ids = new Array;
+                    $(".ids input:checkbox").each(function (i) {
+                        if ($(this).prop("checked") == true) {
+                            ids.push($(this).val());
+                        }
+                    });
+                    if (ids.length <= 0) {
+                        Xcms.notify('请选择要操作的数据~');
+                        return;
+                    }
+                    Xcms.xpost("{:url('enable')}", {ids: ids});
+                    return false;
+                });
+            {/case}
+            {case value = "disable"}
+                $(".disable").click(function () {
+                    var ids = new Array;
+                    $(".ids input:checkbox").each(function (i) {
+                        if ($(this).prop("checked") == true) {
+                            ids.push($(this).val());
+                        }
+                    });
+                    if (ids.length <= 0) {
+                        Xcms.notify('请选择要操作的数据~');
+                        return;
+                    }
+                    Xcms.xpost("{:url('disable')}", {ids: ids});
+                    return false;
+                });
+            {/case}
+            {case value = "delete"}
+                $(".delete").click(function () {
+                    var ids = new Array;
+                    $(".ids input:checkbox").each(function (i) {
+                        if ($(this).prop("checked") == true) {
+                            ids.push($(this).val());
+                        }
+                    });
+                    if (ids.length <= 0) {
+                        Xcms.notify('请选择要操作的数据~');
+                        return;
+                    }
+                    Xcms.xpost("{:url('delete')}", {id: ids});
+                    return false;
+                });
+            {/case}
+            {case value = "export"}
+                $(".export").click(function () {
+                    var ids = new Array;
+                    $(".ids input:checkbox").each(function (i) {
+                        if ($(this).prop("checked") == true) {
+                            ids.push($(this).val());
+                        }
+                    });
+                    if (ids.length <= 0) {
+                        Xcms.notify('请选择要操作的数据~');
+                        return;
+                    }
+                    Xcms.xpost("{:url('export')}", {id: ids});
+                    return false;
+                });
+            {/case}
+            {case value = "optimize"}
+                $(".optimizes").click(function () {
+                    var ids = new Array;
+                    $(".ids input:checkbox").each(function (i) {
+                        if ($(this).prop("checked") == true) {
+                            ids.push($(this).val());
+                        }
+                    });
+                    if (ids.length <= 0) {
+                        Xcms.notify('请选择要操作的数据~');
+                        return;
+                    }
+                    Xcms.xpost("{:url('optimize')}", {id: ids});
+                    return false;
+                });
+            {/case}
+            {case value = "repair"}
+                $(".repairs").click(function () {
+                    var ids = new Array;
+                    $(".ids input:checkbox").each(function (i) {
+                        if ($(this).prop("checked") == true) {
+                            ids.push($(this).val());
+                        }
+                    });
+                    if (ids.length <= 0) {
+                        Xcms.notify('请选择要操作的数据~');
+                        return;
+                    }
+                    Xcms.xpost("{:url('repair')}", {id: ids});
+                    return false;
+                });
+            {/case}
+            {case value = "rules"}
+                $(".rules").click(function () {
+                    Xcms.xpost("{:url('upRules')}");
+                    return false;
+                });
+            {/case}
+        {/switch}
+    {/volist}
+    {/if}
+
+    //更改状态
+    $(".switch-status").change(function () {
+        var data = $(this).prop('checked');
+        if (data == true) {
+            data = 1;
+        } else {
+            data = 0;
+        }
+        var id = $(this).val();
+        var moduleid = $(this).attr("data-moduleid");
+        if(moduleid){
+            Xcms.xpost("{:url('changeStatus')}", {id: id, data: data,moduleid:moduleid});
+        }else{
+            Xcms.xpost("{:url('changeStatus')}", {id: id, data: data});
+        }
+        return false;
+    })
+
+    //排序
+    $(".sort").blur(function () {
+        var id = $(this).attr('data-id');
+        var data = Math.floor($(this).val());
+        var dafault = $(this).attr('data-default');
+        if (dafault != data) {
+            Xcms.xpost("{:url('changeSort')}", {id: id, data: data});
+            return false;
+        }
+    })
+
+    //操作
+    {if (!empty($ops))}
+    {volist name = "ops" id = "op"}
+        {switch name = "op"}
+            {case value = "del"}
+                $(".del").click(function () {
+                    var id = $(this).attr("data-id");
+                    var moduleid = $(this).attr("data-moduleid");
+                    if(moduleid){
+                        Xcms.xpost("{:url('delete')}", {id: id,moduleid:moduleid});
+                    }else{
+                        Xcms.xpost("{:url('delete')}", {id: id});
+                    }
+                    return false;
+                });
+            {/case}
+            {case value = "optimize"}
+                $(".optimize").click(function () {
+                    var id = $(this).attr("data-id");
+                    Xcms.xpost("{:url('optimize')}", {id: id});
+                    return false;
+                });
+            {/case}
+            {case value = "repair"}
+                $(".repair").click(function () {
+                    var id = $(this).attr("data-id");
+                    Xcms.xpost("{:url('repair')}", {id: id});
+                    return false;
+                });
+            {/case}
+            {case value = "restore"}
+                $(".restore").click(function () {
+                    var time = $(this).attr("data-id");
+                    Xcms.xpost("{:url('import')}", {time: time});
+                    return false;
+                });
+            {/case}
+        {/switch}
+    {/volist}
+    {/if}
+
+    //条件筛选
+    {if (!empty($filters))}
+    $(".getUrl").change(function () {
+        var pagesize = $('select[name="pagesize"]').val();
+        {if (!empty($filters))}
+        {volist name = "filters" id = "f"}
+        var {$f.name} = $('select[name="{$f.name}"]').val();
+        {/volist}
+        location.href = window.location.pathname + "?pagesize=" + pagesize + "&{$f.name}=" + {$f.name};
+        {else/}
+        location.href = window.location.pathname + "?pagesize=" + pagesize;
+        {/if}
+    });
+    {/if}
+</script>

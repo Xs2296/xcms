@@ -1,0 +1,85 @@
+{extend name="$BaseLayout" /}
+
+{block name="style"}
+<link rel="stylesheet" href="__ONEUI__/js/plugins/bootstrap-treeview/bootstrap-treeview.css">
+{/block}
+
+{block name="content"}
+<main id="main-container">
+    {include file="./apps/admin/view/items/nav.html" /}
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block">
+                    <ul class="nav nav-tabs" style="min-height: 46px;">
+                        <li><h3 style="line-height: 46px;font-size: 14px;padding: 0 20px;">&emsp;{$title}&emsp;</h3>
+                        </li>
+                        <li class="pull-right">
+                            <ul class="block-options push-10-t push-10-r">
+                                <li>
+                                    <button type="button" data-toggle="block-option" data-action="refresh_toggle"
+                                            data-action-mode="demo"><i class="si si-refresh"></i></button>
+                                </li>
+                                <li>
+                                    <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"><i
+                                            class="si si-size-fullscreen"></i></button>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="block-content tab-content">
+                        <form class="form-horizontal push-10-t rule-form"  action="{:url()}" method="post">
+                            <input type="hidden" name="id" value="{$id}">
+                            <table style="width:100%;">
+                                <tbody>
+                                <tr>
+                                    <th class="col-lg-2 text-right">所属模块</th>
+                                    <th class="col-lg-1"></th>
+                                    <th class="col-lg-9 text-left">权限节点</th>
+                                </tr>
+                                </tbody>
+
+                                {volist name="list" id="node"}
+                                <tr>
+                                    <td class="info col-lg-2 text-right">{$key}</td>
+                                    <td class="info col-lg-1"></td>
+                                    <td class="info col-lg-9 text-left">
+                                        {volist name="node" id="vo"}
+                                        <span class="indenter" style="padding-left: 0px;"></span>
+                                        <label class="css-input css-checkbox css-checkbox-primary">
+                                            <input type="checkbox" name="rule[]" value="{$vo['id']}" {if condition="$vo.on eq 1" }checked{/if} >
+                                            <span></span> {:getRuleName($vo['title'])} &emsp;
+                                        </label>
+                                        {/volist}
+                                    </td>
+                                </tr>
+                                {/volist}
+                            </table>
+                            <div class="form-group" style="padding-top: 20px;">
+                                <div class="col-xs-12">
+                                    <button class="btn btn-minw btn-primary" type="submit">提交</button>
+                                    <button class="btn btn-default" type="button"
+                                            onclick="javascript:history.back(-1);return false;">返回
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{/block}
+
+{block name="script"}
+<script type='text/javascript'>
+    jQuery(function () {
+        $('.rule-form').on('submit', function () {
+            var $data = $(this).serialize();
+            Xcms.xpost($(this).attr('action'),$data);
+            return false;
+        });
+    });
+</script>
+{/block}

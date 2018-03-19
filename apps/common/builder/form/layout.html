@@ -1,0 +1,124 @@
+{extend name="$BaseLayout" /}
+
+<!--//Css-->
+{block name="style"}
+{include file="./apps/common/builder/form/items/css.html" /}
+{/block}
+
+<!--//内容-->
+{block name="content"}
+<main id="main-container">
+    {include file="./apps/admin/view/items/nav.html" /}
+    <!-- Page Content -->
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block">
+                    <ul class="nav nav-tabs">
+                        {if condition="$ac eq 'System' "}
+                            {volist name="tabs" id="tab"}
+                                <li {if condition="($key eq $group)  OR ($key eq 'system' AND $group eq '')" }class="active" {/if}><a href="{$tab.url}">&emsp;{$tab.title}&emsp;</a></li>
+                            {/volist}
+                        {else/}
+                            <li><h3 style="line-height: 46px;font-size: 14px;padding: 0 20px;">&emsp;{$title}&emsp;</h3></li>
+                        {/if}
+                        <li class="pull-right">
+                            <ul class="block-options push-10-t push-10-r">
+                                <li>
+                                    <button type="button" data-toggle="block-option" data-action="refresh_toggle"
+                                            data-action-mode="demo"><i class="si si-refresh"></i></button>
+                                </li>
+                                <li>
+                                    <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"><i
+                                            class="si si-size-fullscreen"></i></button>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="block-content tab-content">
+                        <div class="tab-pane active">
+                            <div class="block-content">
+                                <form class="form-horizontal apost" action="{$postUrl|default=''}"
+                                      method="{$postMethod}">
+                                    {volist name="formData" id="form"}
+                                        {switch name="form.type"}
+                                            {case value="hidden"}
+                                                {include file="./apps/common/builder/form/items/hidden.html" /}
+                                            {/case}
+                                            {case value="text"}
+                                                {include file="./apps/common/builder/form/items/text.html" /}
+                                            {/case}
+                                            {case value="textarea"}
+                                                {include file="./apps/common/builder/form/items/textarea.html" /}
+                                            {/case}
+                                            {case value="password"}
+                                                {include file="./apps/common/builder/form/items/password.html" /}
+                                            {/case}
+                                            {case value="radio"}
+                                                {include file="./apps/common/builder/form/items/radio.html" /}
+                                            {/case}
+                                            {case value="checkbox"}
+                                                {include file="./apps/common/builder/form/items/checkbox.html" /}
+                                            {/case}
+                                            {case value="select"}
+                                                {include file="./apps/common/builder/form/items/select.html" /}
+                                            {/case}
+                                            {case value="selects"}
+                                                {include file="./apps/common/builder/form/items/selects.html" /}
+                                            {/case}
+                                            {case value="switch"}
+                                                {include file="./apps/common/builder/form/items/switch.html" /}
+                                            {/case}
+                                            {case value="date"}
+                                                {include file="./apps/common/builder/form/items/date.html" /}
+                                            {/case}
+                                            {case value="tags"}
+                                                {include file="./apps/common/builder/form/items/tags.html" /}
+                                            {/case}
+                                            {case value="image"}
+                                                {include file="./apps/common/builder/form/items/image.html" /}
+                                            {/case}
+                                            {case value="images"}
+                                                {include file="./apps/common/builder/form/items/images.html" /}
+                                            {/case}
+                                            {case value="file"}
+                                                {include file="./apps/common/builder/form/items/file.html" /}
+                                            {/case}
+                                            {case value="files"}
+                                                {include file="./apps/common/builder/form/items/files.html" /}
+                                            {/case}
+                                            {case value="ueditor"}
+                                                {include file="./apps/common/builder/form/items/ueditor.html" /}
+                                            {/case}
+                                        {/switch}
+                                    {/volist}
+                                    <div class="form-group" style="padding-top: 20px;">
+                                        <div class="col-xs-12">
+                                            <button class="btn btn-minw btn-primary" type="submit">提交</button>
+                                            <button class="btn btn-default" type="button"
+                                                    onclick="javascript:history.back(-1);return false;">返回
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{/block}
+
+<!--//Js-->
+{block name="script"}
+{include file="./apps/common/builder/form/items/js.html" /}
+{if condition="$ac eq 'Xcms' "}
+    {include file="./apps/common/builder/form/items/uejs.html" /}
+{/if}
+{if condition="$ac eq 'Fields' "}
+    {include file="./apps/common/builder/form/items/rulejs.html" /}
+{/if}
+{include file="./apps/common/builder/form/ajax.html" /}
+{/block}

@@ -1,0 +1,7 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="tags-{$form[name]}">{$form[title]}</label>
+    <div class="col-sm-12">
+        <input class="js-tags-input form-control" type="text" id="tags-{$form[name]}" name="{$form[name]}" value="{$form[value]}">
+        <div class="help-block">{if condition="$form.tips neq ''"}{$form[tips]}{/if}</div>
+    </div>
+</div>

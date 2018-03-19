@@ -1,0 +1,7 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="text-{$form[name]}">{$form[title]}</label>
+    <div class="col-sm-12">
+        <input class="form-control" type="text" id="text-{$form[name]}" name="{$form[name]}" placeholder="请输入{$form[title]}" value="{$form[value]}" {if condition="$form.readonly eq 1"}readonly{/if}>
+        <div class="help-block">{if condition="$form.tips neq ''"}{$form[tips]}{/if}</div>
+    </div>
+</div>

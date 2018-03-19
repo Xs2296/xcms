@@ -1,0 +1,22 @@
+<div class="form-group imgsContents" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="image-{$form[name]}">{$form[title]}</label>
+    <input type="hidden" name="{$form[name]}" id="thumbs" value="{$form[ids]}">
+    {notempty name="$form[options]"}
+        {volist name="$form[options]" id="vo"}
+            <div class="image-{$form[name]} imgsModel" style="margin-right:20px">
+                <div style="width: 200px;height: auto;max-height:150px;margin: 10px; padding: 10px;position: relative;" class="col-xs-3"  data-id="{$vo.value}">
+                    <input type="file" onchange="uploadThumbs(this)" style="position: absolute;width: 100%;height:100%;opacity: 0;z-index: 100">
+                    <img class="picture" src="{$vo.thumb}" style="width: 200px;height: 150px;max-height:150px;box-shadow: 0 0 3px #eacaca;'" />
+                    <i class="si si-close" onclick="removeThumbs(this)" style="font-size: 20px;position: absolute;left: 200px;z-index: 105;top: 0px;"></i>
+                </div>
+            </div>
+        {/volist}
+    {/notempty}
+    <div class="image-{$form[name]} imgsModel" style="margin-right:20px">
+        <div style="width: 200px;height: auto;max-height:150px;margin: 10px; padding: 10px;position: relative;" class="col-xs-3" data-id="">
+            <input type="file" onchange="uploadThumbs(this)" style="position: absolute;width: 100%;height:100%;opacity: 0;z-index: 100">
+            <img class="picture" src="{$DefaultPic}" style="width: 200px;height: 150px;max-height:150px;box-shadow: 0 0 3px #eacaca;'" />
+            <i class="si si-close" onclick="removeThumbs(this)" style="font-size: 20px;position: absolute;left: 200px;z-index: 105;top: 0px;display: none;"></i>
+        </div>
+    </div>
+</div>

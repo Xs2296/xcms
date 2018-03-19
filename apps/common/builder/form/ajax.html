@@ -1,0 +1,123 @@
+<!--//ajax操作-->
+<script type='text/javascript'>
+    $('.apost').on('submit', function () {
+        Xcms.xpost($(this).attr('action'), $(this).serialize());
+        return false;
+    });
+    //单图上传
+    function uploadThumb() {
+        var formdata = new FormData();
+        var fileObj = document.getElementById("pic").files;
+        var id = $('#thumb').val();
+        formdata.append("picture", fileObj[0]);
+        Xcms.loading();
+        $.ajax({
+            url: "{:url('admin/Upload/pic')}",
+            type: 'post',
+            data: formdata,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.code == 1) {
+                    Xcms.loading('hide');
+                    $('#picture').attr('src', res.pic);
+                    $('#thumb').val(res.thumb);
+                    $('.si-close').show();
+                } else {
+                    Xcms.loading('hide');
+                    Xcms.notify(res.msg);
+                }
+            }
+        });
+    }
+    //图片移除
+    function removeThumb() {
+        var id = $('#thumb').val();
+        if (id) {
+            Xcms.loading();
+            $.post("{:url('admin/Upload/remove')}", {id: id}, function (res) {
+                Xcms.loading('hide');
+                if (res.code) {
+                    Xcms.notify(res.msg, res.url);
+                    $('#picture').attr('src', '{$DefaultPic}');
+                    $('#thumb').val('');
+                    $('.si-close').hide();
+                } else {
+                    Xcms.notify(res.msg);
+                }
+            }).fail(function () {
+                Xcms.loading('hide');
+                Xcms.notify('服务器错误~');
+            });
+        } else {
+            Xcms.notify('未上传图片~');
+        }
+        return false;
+    }
+    //多图上传
+    function uploadThumbs(obj) {
+        var formdata = new FormData();
+        var id = $(obj).parent().attr('data-id');
+        formdata.append("picture", obj.files[0]);
+        Xcms.loading();
+        $.ajax({
+            url: "{:url('admin/Upload/pic')}",
+            type: 'post',
+            data: formdata,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.code == 1) {
+                    Xcms.loading('hide');
+                    var parent = $(obj).parent().attr('data-id', res.thumb);
+                    $('.picture', parent).attr('src', res.pic);
+                    if (!id) {
+                        //添加
+                        var imgsModel = $('.imgsModel').eq(0).clone();
+                        $('.picture', imgsModel).attr('src', '{$DefaultPic}');
+                        $('input', imgsModel).val('');
+                        $('.col-xs-3', imgsModel).attr('data-id', '');
+                        $('i', imgsModel).hide();
+                        $('.imgsContents').append(imgsModel);
+                        $('#thumbs').val($('#thumbs').val() + res.thumb + ',');
+                    } else {
+                        //修改
+                        $(obj).parent().attr('data-id', res.thumb);
+                        var thumbs = $('#thumbs').val().split(id + ',');
+                        $('#thumbs').val(thumbs[0] + thumbs[1] + res.thumb + ',');
+                    }
+                    $('i', parent).show();
+                } else {
+                    Xcms.loading('hide');
+                    Xcms.notify(res.msg);
+                }
+            }
+        });
+    }
+    //多图片移除
+    function removeThumbs(obj) {
+        var parent = $(obj).parent();
+        var id = parent.attr('data-id');
+        if (id) {
+            Xcms.loading();
+            $.post("{:url('admin/Upload/remove')}", {id: id}, function (res) {
+                Xcms.loading('hide');
+                if (res.code) {
+                    Xcms.notify(res.msg, res.url);
+                    var thumbs = $('#thumbs').val().split(id + ',');
+                    $('#thumbs').val(thumbs[0] + thumbs[1]);
+                    $(obj).parents('.imgsModel').remove();
+                } else {
+                    Xcms.notify(res.msg);
+                }
+            }).fail(function () {
+                Xcms.loading('hide');
+                Xcms.notify('服务器错误~');
+            });
+        } else {
+            Xcms.notify('未上传图片~');
+        }
+    }
+</script>

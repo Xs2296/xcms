@@ -1,0 +1,12 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="date-{$form[name]}">{$form[title]}</label>
+    <div class="col-sm-12">
+        <div class="js-datetimepicker input-group date" data-show-today-button="true" data-show-clear="true" data-show-close="true">
+            <input class="form-control" type="text" id="date-{$form[name]}" name="{$form[name]}" placeholder="请选择{$form[title]}"
+                   value="{if condition="$form.value neq ''"}{:date('m/d/Y H:i',$form[value])}{else/}{:date('m/d/Y H:i',time())}{/if}">
+            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+        </div>
+        <div class="help-block">{if condition="$form.tips neq ''"}{$form[tips]}{/if}</div>
+    </div>
+</div>
+

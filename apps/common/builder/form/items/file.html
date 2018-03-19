@@ -1,0 +1,18 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="{$form[name]}">{$form[title]}</label>
+    <div class="col-sm-12">
+        <ul class="list-group uploader-list" id="file_list_{$form[name]}">
+            {notempty name="form[value]"}
+            <li class="list-group-item file-item"><i class="fa fa-times-circle remove-file"></i> {$form[value]}</li>
+            {/notempty}
+        </ul>
+        <input type="hidden" name="{$form[name]}" data-multiple="false" data-size="{$form['size']|default=0}"
+               data-ext='{$form["ext"]|default=""}' id="{$form[name]}" value="{$form[value]|default=''}">
+        <div id="picker_cover" class="webuploader-container">
+            <div class="webuploader-pick" style="position: relative;display: inline-block;cursor: pointer;background: #00b7ee;padding: 10px 15px;color: #fff;text-align: center;border-radius: 3px;overflow: hidden;">上传单张图片</div>
+        </div>
+        <div class="help-block">{if condition="$form.tips neq ''"}{$form[tips]}{/if}</div>
+    </div>
+</div>
+
+

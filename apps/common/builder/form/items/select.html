@@ -1,0 +1,11 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="select-{$form[name]}">{$form[title]}</label>
+    <div class="col-sm-12">
+        <select class="form-control" id="select-{$form[name]}" name="{$form[name]}" size="1">
+            {volist name="form[options]" id="ops"}
+            <option value="{$ops.id}" {eq name="$ops.id" value="$form[value]|default=''"} selected{/eq} {if condition="$ops.show eq 0"} disabled="disabled" style="color: #CCC;"{/if} >{$ops.title}</option>
+            {/volist}
+        </select>
+        <div class="help-block">{if condition="$form.tips neq ''"}{$form[tips]}{/if}</div>
+    </div>
+</div>

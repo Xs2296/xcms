@@ -1,0 +1,11 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="image-{$form[name]}">{$form[title]}</label>
+    <div class="col-xs-12 image-{$form[name]}">
+        <div style="width: 200px;height: auto;max-height:150px;margin: 10px; padding: 10px;position: relative;" class="col-xs-3">
+            <input type="hidden" name="{$form[name]}" id="thumb" value="{$form[value]}">
+            <input id="pic" type="file" onchange="uploadThumb()" style="position: absolute;width: 100%;height:100%;opacity: 0;z-index: 100" >
+            <img id="picture" src="{if condition=" $form.thumb neq ''"}{$form[thumb]}{else/}{$DefaultPic}{/if}" style="width: 200px;height: 150px;max-height:150px;box-shadow: 0 0 3px #eacaca;'"/>
+            <i class="si si-close"  onclick="removeThumb()" style="font-size: 20px;position: absolute;left: 200px;z-index: 105;top: 0px;{if condition=" $form.thumb eq ''"}display: none;{/if}"></i>
+        </div>
+    </div>
+</div>

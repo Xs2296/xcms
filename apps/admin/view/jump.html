@@ -1,0 +1,17 @@
+{extend name="$BaseLayout" /}
+
+{block name="script"}
+<script type='text/javascript'>
+    jQuery(function () {
+        if('{$code}' == 1){
+            Xcms.notify('{$msg}', '{$url}');
+        }else{
+            Xcms.notify('{$msg}');
+        }
+        setTimeout(function () {
+            location.href = '{$url}';
+        }, 1500);
+    })
+</script>
+{/block}
+

@@ -1,0 +1,7 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="textarea-{$form[name]}">{$form[title]}</label>
+    <div class="col-sm-12">
+        <textarea class="form-control" id="textarea-{$form[name]}" name="{$form[name]}" rows="7" placeholder="请输入{$form[title]}">{$form[value]}</textarea>
+        <div class="help-block">{if condition="$form.tips neq ''"}{$form[tips]}{/if}</div>
+    </div>
+</div>

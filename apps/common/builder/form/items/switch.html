@@ -1,0 +1,12 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="switch-{$form[name]}">{$form[title]}</label>
+    <div class="col-sm-12">
+        <label class="css-input switch switch-sm switch-success" id="switch-{$form[name]}">
+            <input type="checkbox" name="{$form[name]}" {eq name="1" value="$form[value]|default=''"}checked{/eq}><span></span>
+        </label>
+        <div class="help-block">{if condition="$form.tips neq ''"}{$form[tips]}{/if}</div>
+    </div>
+</div>
+
+
+

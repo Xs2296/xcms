@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>{if condition="$site.title neq ''"}{$site.title} - {/if}后台管理 - Xcms</title>
+    <meta name="author" content="Xcms"/>
+    <meta name="keywords" content="{$site.keywords}">
+    <meta name="description" content="{$site.description}"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
+    <link rel="shortcut icon" href="__ONEUI__/img/favicon.png">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
+    {block name="style"}{/block}
+    <link rel="stylesheet" href="__ONEUI__/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__ONEUI__/css/font-awesome.min.css">
+    <link rel="stylesheet" id="css-main" href="__ONEUI__/css/oneui.css">
+    <link rel="stylesheet" class="css-themes" href="__ONEUI__/css/themes/{$themes}.min.css">
+</head>
+<body>
+<div id="page-container" class="sidebar-l sidebar-o side-scroll header-navbar-fixed">
+    {include file="items/menu" /}
+    {include file="items/top" /}
+    {block name="content"}{/block}
+    {include file="items/foot" /}
+</div>
+<script src="__ONEUI__/js/core/jquery.min.js"></script>
+<script src="__ONEUI__/js/core/bootstrap.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.slimscroll.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.scrollLock.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.appear.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.countTo.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.placeholder.min.js"></script>
+<script src="__ONEUI__/js/core/js.cookie.min.js"></script>
+<script src="__ONEUI__/js/plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="__ONEUI__/js/cms.js"></script>
+<script src="__ONEUI__/js/app.js"></script>
+{block name="script"}{/block}
+<script type='text/javascript'>
+    jQuery(function () {
+        //样式切换
+        $('.themes a').on('click', function () {
+            $('.themes li').removeClass('active');
+            $(this).parent().addClass('active');
+            var themes = $(this).attr('data-theme');
+            $('.css-themes').attr('href',themes);
+        });
+        //清除缓存
+        $('.clearCache').on('click', function () {
+            Xcms.xpost("{:url('admin/index/clearCache')}");
+            return false;
+        });
+        //锁屏
+        $('.lock').on('click', function () {
+            Xcms.xpost("{:url('admin/index/lock')}");
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>后台登录 - Xcms</title>
+    <meta name="description" content="Xcms管理系统">
+    <meta name="author" content="Xcms">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="__ONEUI__/img/favicons/favicon.png">
+    <link rel="stylesheet"
+          href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
+    <link rel="stylesheet" href="__ONEUI__/css/bootstrap.min.css">
+    <link rel="stylesheet" id="css-main" href="__ONEUI__/css/oneui.css">
+</head>
+<body>
+
+<div class="bg-white pulldown">
+    <div class="content content-boxed overflow-hidden">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                <div class="push-30-t push-50 animated fadeIn">
+                    <div class="text-center">
+                        <i class="fa fa-2x fa-circle-o-notch text-primary"></i>
+                        <p class="text-muted push-15-t">Xcms</p>
+                    </div>
+                    <form class="js-validation-login form-horizontal push-30-t login-form" action="{:url()}" method="post">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="form-material form-material-primary">
+                                    <input class="form-control" type="text" id="login-username" name="username"
+                                           placeholder="请输入用户名">
+                                    <label for="login-username">用户名</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="form-material form-material-primary">
+                                    <input class="form-control" type="password" id="login-password"
+                                           name="password" placeholder="请输入密码">
+                                    <label for="login-password">密码</label>
+                                </div>
+                            </div>
+                        </div>
+                        {if condition="$captcha == 1"}
+                        <div class="form-group">
+                            <label class="col-xs-12" for="login-captcha">验证码</label>
+                            <div class="col-xs-7">
+                                <input class="form-control" type="text" id="login-captcha" name="captcha" placeholder="请输入验证码">
+                            </div>
+                            <div class="col-xs-5">
+                                <img src="{:captcha_src()}" id="captcha" onclick="this.src='{:captcha_src()}?d='+Math.random();" alt="验证码" title="点击刷新" style="cursor: pointer; width:130px; height:34px;" />
+                            </div>
+                        </div>
+                        {/if}
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="css-input switch switch-sm switch-primary">
+                                    <input type="checkbox" name="remember"><span></span>
+                                    7天内自动登录?
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group push-30-t">
+                            <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                                <button class="btn btn-sm btn-block btn-primary" type="submit">登录</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pulldown push-30-t text-center animated fadeInUp">
+    <small class="text-muted"><span class="js-year-copy"></span> &copy; Xcms</small>
+</div>
+
+<script src="__ONEUI__/js/core/jquery.min.js"></script>
+<script src="__ONEUI__/js/core/bootstrap.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.slimscroll.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.scrollLock.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.appear.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.countTo.min.js"></script>
+<script src="__ONEUI__/js/core/jquery.placeholder.min.js"></script>
+<script src="__ONEUI__/js/core/js.cookie.min.js"></script>
+<script src="__ONEUI__/js/plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="__ONEUI__/js/cms.js"></script>
+<script src="__ONEUI__/js/app.js"></script>
+<script>
+    jQuery(function () {
+        $('.login-form').on('submit', function () {
+            var $data = $(this).serialize();
+            Xcms.loading();
+            $.post($(this).attr('action'), $data, function (res) {
+                Xcms.loading('hide');
+                if (res.code) {
+                    Xcms.notify(res.msg, res.url);
+                    setTimeout(function () {
+                        location.href = res.url;
+                    }, 1500);
+                } else {
+                    Xcms.notify(res.msg);
+                    $("#captcha").click();
+                }
+            }).fail(function () {
+                Xcms.loading('hide');
+                Xcms.notify('服务器错误~');
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

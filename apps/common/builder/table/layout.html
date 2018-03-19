@@ -1,0 +1,273 @@
+{extend name="$BaseLayout" /}
+
+<!--//内容-->
+{block name="content"}
+<main id="main-container">
+    {include file="./apps/admin/view/items/nav.html" /}
+    <!-- Page Content -->
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block">
+                    <ul class="nav nav-tabs" style="min-height: 46px;">
+                        <!--//菜单导航-->
+                        {if condition="$ac eq 'Database' "}
+                            <li {if condition="($group eq 'export')  OR ($group eq '')" }class="active" {/if}><a href="{:url('admin/Database/index',array('group'=>export))}">备份数据库</a></li>
+                            <li {if condition="($group eq 'import')" }class="active" {/if}><a href="{:url('admin/Database/index',array('group'=>import))}">还原数据库</a></li>
+                        {elseif condition="$ac eq 'Config' "/}
+                            {volist name="tabs" id="tab"}
+                                <li {if condition="($key eq $group) OR ($key eq 'system' AND $group eq '')" }class="active" {/if}><a href="{$tab.url}">&emsp;{$tab.title}&emsp;</a></li>
+                            {/volist}
+                        {else/}
+                            <li><h3 style="line-height: 46px;font-size: 14px;padding: 0 20px;">&emsp;{$title}&emsp;</h3></li>
+                        {/if}
+                        <!--//右侧刷新-->
+                        <li class="pull-right">
+                            <ul class="block-options push-10-t push-10-r">
+                                <li>
+                                    <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+                                </li>
+                                <li>
+                                    <button type="button" data-toggle="block-option" data-action="fullscreen_toggle"><i class="si si-size-fullscreen"></i></button>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="block-content tab-content">
+                        <div class="tab-pane active">
+                            <div class="row data-table-toolbar">
+                                <!--//操作按钮-->
+                                <div class="col-sm-6">
+                                    {if (!empty($buttons))}
+                                    {volist name="buttons" id="button"}
+                                        {switch name="button"}
+                                            {case value="add"}
+                                                {if condition="($ac eq 'Fields') OR ($ac eq 'Xcms') "}
+                                                    <a title="新增" icon="fa fa-plus-circle" class="btn btn-primary"
+                                                       href="{:url('add',array('moduleid'=>$moduleid))}"><i class="fa fa-plus-circle"></i> 新增</a>
+                                                {else/}
+                                                    <a title="新增" icon="fa fa-plus-circle" class="btn btn-primary" href="{:url('add')}"><i class="fa fa-plus-circle"></i> 新增</a>
+                                                {/if}
+                                            {/case}
+                                            {case value="enable"}
+                                                <button title="启用" icon="fa fa-check-circle-o" class="btn btn-success enable"><i class="fa fa-check-circle-o"></i> 启用</button>
+                                            {/case}
+                                            {case value="disable"}
+                                                <button title="禁用" icon="fa fa-ban" class="btn btn-warning disable"><i class="fa fa-ban"></i> 禁用</button>
+                                            {/case}
+                                            {case value="delete"}
+                                                <button title="删除" icon="fa fa-times-circle-o" class="btn btn-danger delete"><i class="fa fa-ban"></i> 删除</button>
+                                            {/case}
+                                            {case value="export"}
+                                                <button title="立即备份" icon="fa fa-fw fa-copy" class="btn btn-primary export"><i class="fa fa-ban"></i> 立即备份</button>
+                                            {/case}
+                                            {case value="optimize"}
+                                                <button title="优化表" icon="fa fa-fw fa-cogs" class="btn btn-success optimizes"><i class="fa fa-ban"></i> 优化表</button>
+                                            {/case}
+                                            {case value="repair"}
+                                                <button title="修复表" icon="fa fa-fw fa-wrench" class="btn btn-success repairs"><i class="fa fa-ban"></i> 修复表</button>
+                                            {/case}
+                                            {case value="rules"}
+                                                <button title="更新节点" icon="fa fa-fw fa-key" class="btn btn-success rules"><i class="fa fa-fw fa-key"></i> 更新节点</button>
+                                            {/case}
+                                        {/switch}
+                                    {/volist}
+                                    {/if}
+                                </div>
+                                <!--//搜索框-->
+                                {if (!empty($search))}
+                                <div class="col-sm-6">
+                                    <div class="input-group" style="width: 300px; float: right;">
+                                        <input type="search" name="{$search.name}" class="form-control" value="{$search.keyword}" placeholder="{$search.title}">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" id="search-btn" data-toggle="dropdown" type="button" aria-expanded="false" onclick="search()"> 搜索</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/if}
+                            </div>
+
+                            <div class="table-responsive" style="margin-top: 20px;">
+                                <table class="table table-builder table-hover table-bordered table-striped js-table-checkable">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 70px;">
+                                            <label class="css-input css-checkbox css-checkbox-primary remove-margin-t remove-margin-b">
+                                                <input type="checkbox" id="check-all"><span></span>
+                                            </label>
+                                        </th>
+                                        <!--//表头-->
+                                        {volist name="columns" id="c"}
+                                            <th class="text-center">{$c.name}</th>
+                                        {/volist}
+                                        {if (!empty($ops))}
+                                        <th class="text-center">操作</th>
+                                        {/if}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {notempty name="datas"}
+                                        {volist name="datas" id="vo"}
+                                        <tr class="list">
+                                            <td class="text-center">
+                                                <label class="css-input css-checkbox css-checkbox-primary ids">
+                                                    <input type="checkbox" name="ids[]" value='{notempty name="$vo.id"}{$vo.id}{else/}{$vo.name}{/notempty}' class="check-id "><span></span>
+                                                </label>
+                                            </td>
+                                            {volist name="columns" id="column"}
+                                                <td class="text-center">
+                                                    {if condition="$column['id'] eq 'status' "}
+                                                        {if condition="$ac eq 'Xcms' "}
+                                                            <label class="css-input switch switch-sm switch-primary">
+                                                                <input type="checkbox" {if condition="$vo[$column['id']] eq 1" }checked{/if} class="switch-status" value="{$vo['id']}" data-moduleid='{$moduleid}'><span></span>
+                                                            </label>
+                                                        {else/}
+                                                            <label class="css-input switch switch-sm switch-primary">
+                                                                <input type="checkbox" {if condition="$vo[$column['id']] eq 1" }checked{/if} class="switch-status" value="{$vo['id']}"><span></span>
+                                                            </label>
+                                                        {/if}
+                                                    {elseif condition="$column['id'] eq 'sort' " /}
+                                                        <input class="form-control sort" data-id="{$vo['id']}"
+                                                               data-default="{$vo[$column['id']]|default=''}" type="text"
+                                                               value="{$vo[$column['id']]|default=''}"
+                                                               style="width:50px; text-align: center;display: inline-block;">
+                                                    {elseif condition="$column['id'] eq 'data_length' " /}
+                                                        {:dataSize($vo[$column['id']])}
+                                                    {elseif condition="$column['id'] eq 'data_free' " /}
+                                                        {:dataSize($vo[$column['id']])}
+                                                    {elseif condition="$column['id'] eq 'size' " /}
+                                                        {:dataSize($vo[$column['id']])}
+                                                    {elseif condition="$column['id'] eq 'type' " /}
+                                                        {:getItemType($vo[$column['id']])}
+                                                    {elseif condition="$column['id'] eq 'create_time' " /}
+                                                        {$vo[$column['id']]|date="Y-m-d H:i",###}
+                                                    {elseif condition="$column['id'] eq 'cates' " /}
+                                                        {:getCateName($vo[$column['id']])}
+                                                    {elseif condition="$column['id'] eq 'last_login_time' " /}
+                                                        {$vo[$column['id']]|date="Y-m-d H:i",###}
+                                                    {else/}
+                                                        {$vo[$column['id']]|default=''}
+                                                    {/if}
+                                                </td>
+                                            {/volist}
+                                            <!--//操作-->
+                                            {if (!empty($ops))}
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    {volist name="ops" id="op"}
+                                                        {switch name="op"}
+                                                            {case value="fields"}
+                                                                <a class="btn btn-xs btn-default btn-warning" data-original-title="字段管理" data-toggle="tooltip" href="{:url('admin/fields/index',['moduleid'=>$vo['id']])}" style="overflow: hidden; position: relative;margin-right: 10px;" title="">
+                                                                    <i class="fa fa-list"></i>
+                                                                </a>
+                                                            {/case}
+                                                            {case value="rules"}
+                                                                <a class="btn btn-xs btn-default btn-warning" data-original-title="权限管理" data-toggle="tooltip" href="{:url('admin/access/rules',['id'=>$vo['id']])}" style="overflow: hidden; position: relative;margin-right: 10px;" title="">
+                                                                    <i class="fa fa-list"></i>
+                                                                </a>
+                                                            {/case}
+                                                            {case value="edit"}
+                                                                {if condition="$ac eq 'Xcms' "}
+                                                                    <a class="btn btn-effect-ripple btn-xs btn-success" data-original-title="编辑" data-toggle="tooltip" href="{:url('edit',['id'=>$vo['id'],'moduleid'=>$moduleid])}" style="overflow: hidden; position: relative;" title="">
+                                                                        <i class="fa fa-pencil"></i>
+                                                                    </a>
+                                                                {else/}
+                                                                    <a class="btn btn-effect-ripple btn-xs btn-success" data-original-title="编辑" data-toggle="tooltip" href="{:url('edit',['id'=>$vo['id']])}" style="overflow: hidden; position: relative;" title="">
+                                                                        <i class="fa fa-pencil"></i>
+                                                                    </a>
+                                                                {/if}
+                                                            {/case}
+                                                            {case value="del"}
+                                                                {if condition="$ac eq 'Xcms' "}
+                                                                    <a class="btn btn-effect-ripple btn-xs btn-danger del" data-original-title="删除" data-toggle="tooltip" data-id='{notempty name="$vo.id"}{$vo.id}{else/}{$vo.name}{/notempty}' data-moduleid='{$moduleid}' href="javascript:void(0)" style="overflow: hidden; position: relative; margin-left: 10px" title="">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </a>
+                                                                {else/}
+                                                                    <a class="btn btn-effect-ripple btn-xs btn-danger del" data-original-title="删除" data-toggle="tooltip" data-id='{notempty name="$vo.id"}{$vo.id}{else/}{$vo.name}{/notempty}' href="javascript:void(0)" style="overflow: hidden; position: relative; margin-left: 10px" title="">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </a>
+                                                                {/if}
+                                                            {/case}
+                                                            {case value="optimize"}
+                                                                <a class="btn btn-xs btn-default optimize" data-original-title="优化" data-toggle="tooltip" data-id='{notempty name="$vo.id"}{$vo.id}{else/}{$vo.name}{/notempty}' href="javascript:void(0)" style="overflow: hidden; position: relative; margin-left: 10px" title="">
+                                                                    <i class="fa fa-fw fa-cogs"></i>
+                                                                </a>
+                                                            {/case}
+                                                            {case value="repair"}
+                                                                <a class="btn btn-xs btn-default repair" data-original-title="修复" data-toggle="tooltip" data-id='{notempty name="$vo.id"}{$vo.id}{else/}{$vo.name}{/notempty}' href="javascript:void(0)" style="overflow: hidden; position: relative; margin-left: 10px" title="">
+                                                                    <i class="fa fa-fw fa-wrench"></i>
+                                                                </a>
+                                                            {/case}
+                                                            {case value="restore"}
+                                                                <a class="btn btn-xs btn-default restore" data-original-title="还原" data-toggle="tooltip" data-id='{notempty name="$vo.id"}{$vo.id}{else/}{$vo.name}{/notempty}' href="javascript:void(0)" style="overflow: hidden; position: relative; margin-left: 10px" title="">
+                                                                    <i class="fa fa-fw fa-reply"></i>
+                                                                </a>
+                                                            {/case}
+                                                        {/switch}
+                                                    {/volist}
+                                                </div>
+                                            </td>
+                                            {/if}
+                                        </tr>
+                                        {/volist}
+                                    {else/}
+                                        <tr>
+                                            <td class="text-center empty-info" colspan="{$rows}"
+                                                style="background: #fff;padding: 100px 0;font-size: 20px;color: #C7C7C7;">
+                                                <i class="fa fa-database"></i> 暂无数据<br>
+                                            </td>
+                                        </tr>
+                                    {/notempty}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="data-table-toolbar" style="margin-top: 20px;">
+                                <div class="row">
+                                    <!--//筛选项-->
+                                    <div class="col-sm-8">
+                                        {if (!empty($filters))}
+                                        <div class="dataTables_info" id="table-filters">
+                                            <div class="tables-pagesize" id="tables-pagesize" style="float: left;">
+                                                <label>
+                                                    <select name="pagesize" class="form-control getUrl">
+                                                        <option value="10" {if condition="input('pagesize') eq 10"}selected{/if}>10</option>
+                                                        <option value="15" {if condition="input('pagesize') eq 15"}selected{/if}>15</option>
+                                                        <option value="20" {if condition="input('pagesize') eq 20"}selected{/if}>20</option>
+                                                        <option value="50" {if condition="input('pagesize') eq 50"}selected{/if}>20</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            {volist name="filters" id="f"}
+                                            <div class="tables-{$f.name}" id="tables-{$f.name}">
+                                                <label>
+                                                    <select name="{$f.name}" class="form-control getUrl">
+                                                        {volist name="f.value" id="v"}
+                                                            <option value="{$v.value}" {if condition="input($f['name']) eq $v.value" }selected{/if}>{$v.title}</option>
+                                                        {/volist}
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            {/volist}
+                                        </div>
+                                        {/if}
+                                    </div>
+                                    <!--//分页-->
+                                    <div class="col-sm-4">
+                                        {if (!empty($pages))}<div class="pagination-info pull-right">{$pages}</div>{/if}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{/block}
+
+<!--//Js-->
+{block name="script"}
+{include file="./apps/common/builder/table/ajax.html" /}
+{/block}

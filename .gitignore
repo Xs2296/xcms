@@ -1,0 +1,13 @@
+#IDE
+.idea/*
+
+#缓存文件、日志
+data/*
+logs/*
+runtime/*
+
+#配置文件
+apps/database.php
+
+#上传图片
+uploads/*

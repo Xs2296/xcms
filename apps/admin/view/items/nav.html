@@ -1,0 +1,15 @@
+<div class="content bg-gray-lighter">
+    <div class="row items-push">
+        <div class="col-sm-7">
+            <h1 class="page-heading"> {:session('title')} </h1>
+        </div>
+        <div class="col-sm-5 text-right hidden-xs">
+            <ol class="breadcrumb push-10-t">
+                <li><i class="fa fa-map-marker"></i></li>
+                {volist name=":session('urls')" id="vo"}
+                <li><a class="link-effect" href="{$vo.url}">{$vo.title}</a></li>
+                {/volist}
+            </ol>
+        </div>
+    </div>
+</div>

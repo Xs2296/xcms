@@ -1,0 +1,11 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12" for="selects-{$form[name]}">{$form[title]}</label>
+    <div class="col-sm-12">
+        <select class="js-select2 form-control" id="selects-{$form[name]}" name="{$form[name]}" data-placeholder="请选择{$form[title]}" multiple>
+            {volist name="form[options]" id="option"}
+            <option value="{$key}" {in name="$key" value="$form[value]" }selected{/in}>{$option}</option>
+            {/volist}
+        </select>
+        <div class="help-block">{if condition="$form.tips neq ''"}{$form[tips]}{/if}</div>
+    </div>
+</div>
