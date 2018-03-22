@@ -1,0 +1,11 @@
+<div class="form-group" id="form_group_{$form[name]}">
+    <label class="col-xs-12">{$form[title]}</label>
+    <div class="col-sm-12">
+        {volist name="form[options]" id="option"}
+        <label class="radio-inline" for="radio-{$form[name]}{$i}">
+            <input type="radio" id="radio-{$form[name]}{$i}" name="{$form[name]}" value="{$key}" {eq name="key" value="$form[value]|default=''"}checked{/eq}>{$option}
+        </label>
+        {/volist}
+        {if condition="$form.tips neq ''"}<div class="help-block">{$form[tips]}</div>{/if}
+    </div>
+</div>
