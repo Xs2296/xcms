@@ -3,6 +3,6 @@ cms for thinkphp5
 
 
 # 测试地址
-http://test.51zxk.net/admin
+http://cms.xscode.cn/admin
 123456
 123456
